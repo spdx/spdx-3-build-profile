@@ -1,0 +1,33 @@
+- `<Package/File> BUILD_INPUT_OF <Build>`: 
+  - Anything that was made available to the build.
+  - May be superceded by another relationship like `BUILD_CONFIG_OF` or `BUILD_TOOL_OF`
+  - TODO: Do you need `BUILD_INPUT_OF` and `BUILD_TOOL_OF`, or does `BUILD_TOOL_OF` imply `BUILD_INPUT_OF` and what makes sense from a query prespective or producer perspective.
+- `<Package/File> BUILD_OUTPUT_OF <Build>`:
+  - Anything that was produced by the build.
+- `<Package/File> BUILD_CONFIG_OF <Build>`:
+  - Specific case of `BUILD_INPUT_OF`, for config files like `*.conf`, `Makefile`, etc.
+  - Configuration for packages that are `BUILD_TOOL_OF` build.
+- `<Package/File> BUILD_TOOL_OF <Build>`:
+  - Build tool is an input that, if changed, ideally would not result in a functionally different output. It should intend to not be included in the output.
+  - Usually there is some variation between different instances of the same build tool.
+  - Drill bit analogy. Two build tools with a 1/4 inch drill bit would produce the same hole.
+- `BUILD_INVOKED_BY`: 
+    - `<Build> BUILD_INVOKED_BY <Identity>`
+    - Identity would be something like Github Actions. A service can be described through the identity.
+    - For example: `Build A BUILD_INVOKED_BY "Github Actions Identity"`
+    - `"Github Actions Identity" SOME_RELATIONSHIP "Github Actions service/provider SPDX element"` (To be discussed in the future)
+- `BUILD_ON_BEHALF_OF`:
+    - `<Build> BUILD_ON_BEHALF_OF <Identity>`
+    - e.g. Build was triggered by developer Joshua (separate from the place where it was run)
+    - Github user triggers workflow
+- `<BOM> BUILD_HOST_OF <Build>`: 
+  - The VM that was used to build (describing the image that performed the build)
+  - Includes everything in the VM like the files / packages / applications
+  - The packages that are part of the VM can also have `BUILD_INPUT/CONFIG/TOOL_OF` as well
+  - The Bom should also include ENV variables e.g. windows registry case needs to be handled (and other runtime type of parameters).
+    - Env variables here are part of the VM and different from the Build Element parameters which are additional variables (/overrides).
+- `<Build> BUILD_CHILD_OF <Build>`
+  - Nested builds... For example when an orchestrator created
+  - When have a build element that is invoked by the parent build and within lifetime of parent build
+  - Use case of augmenting the information of an existing build element by adding steps
+  - Example: YOCTO builds, multi-stage docker builds
