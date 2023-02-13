@@ -39,8 +39,9 @@ and if/when external references become referencable SPDX elements, we can create
 ## Properties
 
 - buildType
-  - type: buildType
-  - minCount: 0
+  - type: anyURI
+  - minCount: 1
+  - maxCount: 1
 - configSourceEntrypoint
   - type: string
   - minCount: 0
